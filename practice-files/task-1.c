@@ -1,9 +1,8 @@
 #include <stdio.h>
-#define FILE_NAME "a.txt"
 
 int main ()
 {
-FILE * stream = fopen(FILE_NAME, "r");
+FILE * stream = fopen("a.txt", "r");
 
 if (stream == NULL) {
  perror("fopen");
