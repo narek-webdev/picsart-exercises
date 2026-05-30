@@ -1,0 +1,2 @@
+Գրել client-server ծրագիր, որտեղ client-ը ուղարկում է string server-ին, 
+և server-ը պատասխանում է շրջված string-ով (reversed string)։
