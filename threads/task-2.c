@@ -9,18 +9,7 @@
 #include <stdlib.h>
 #define N_NUM 5
 
-_Bool isPrime (int n)
-{
-    if (n < 2) return 0;
-    
-    for (int i = n - 1; i > 1; --i) {
-        if (n % i == 0) {
-            return 0;
-        }
-    }
-    
-    return 1;
-}
+_Bool isPrime (int n);
 
 void * worker1 (void * arg)
 {
@@ -44,9 +33,6 @@ void * worker2 (void * arg)
         printf("%i\n", arr[i]);
     }
     
-    free(arr);
-    arr = NULL;
-    
     return NULL;
 }
 
@@ -60,29 +46,43 @@ int main()
     }
     
     pthread_t t1;
-    int thread1 = pthread_create(&t1, NULL, worker1, arr);
-    if (thread1 != 0) {
-        printf("Thread 1 Error");
+    
+    if (pthread_create(&t1, NULL, worker1, arr)) {
+        perror("pthread_create");
         return 1;
     }
     
-    if (pthread_join(t1, NULL) != 0) {
-     printf("Join error t1");
+    if (pthread_join(t1, NULL)) {
+     perror("pthread_join");
      return 1;
     }
     
     pthread_t t2;
-    int thread2 = pthread_create(&t2, NULL, worker2, arr);
-    
-    if (thread2 != 0) {
-        printf("Thread 2 Error");
+    if (pthread_create(&t2, NULL, worker2, arr)) {
+        perror("pthread_create");
         return 1;
     }
     
-    if (pthread_join(t2, NULL) != 0) {
-        printf("Join error 2");
+    if (pthread_join(t2, NULL)) {
+        perror("pthread_join");
         return 1;
     }
+    
+    free(arr);
+    arr = NULL;
     
     return 0;
+}
+
+_Bool isPrime (int n)
+{
+    if (n < 2) return 0;
+    
+    for (int i = n - 1; i > 1; --i) {
+        if (n % i == 0) {
+            return 0;
+        }
+    }
+    
+    return 1;
 }
